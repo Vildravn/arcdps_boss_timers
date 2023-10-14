@@ -5,6 +5,8 @@ use arc_util::{
 use arcdps::{
     extras::{ExtrasAddonInfo, UserInfoIter, UserRole},
     Agent, CombatEvent, StateChange,
+    imgui::{self, Ui},
+    exports::{self, CoreColor},
 };
 use log::info;
 use imgui::Condition;
@@ -38,7 +40,7 @@ fn render_text(ui: &Ui, text: &str) {
     let window_width = ui.window_content_region_width();
     ui.set_cursor_pos([cursor_x + 0.5 * (window_width - text_width), cursor_y]);
 
-    ui_text_colored(white, text);
+    ui.text_colored(white, text);
 }
 
 fn combat(
@@ -79,7 +81,7 @@ fn extras_squad_update(users: UserInfoIter) {
     }
 }
 
-fn render(&mut self, ui: &Ui, _: ()) {
+fn render(ui: &Ui, _: ()) {
     let [screen_width, screen_height] = ui.io().display_size;
 
     imgui::Window::new("##boss-timers-popup")
