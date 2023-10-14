@@ -1,6 +1,5 @@
 use arc_util::{
     colors::WHITE,
-    ui::{render, Component},
 };
 use arcdps::{
     extras::{ExtrasAddonInfo, UserInfoIter, UserRole},
@@ -12,6 +11,8 @@ use log::info;
 use imgui::Condition;
 
 const FONT_SIZE: f32 = 2.0;
+
+static IS_IN_COMBAT: bool = false;
 
 arcdps::export! {
     name: "Boss Timers",
@@ -59,6 +60,18 @@ fn combat(
                 src.name.unwrap_or("unknown agent"),
                 src.id
             );
+
+            IS_IN_COMBAT = true;
+        }
+
+        if let StateChange::ExitCombat = event.is_statechange {
+            info!(
+                "{} ({}) has left combat",
+                src.name.unwrap_or("unknown agent"),
+                src.id
+            );
+
+            IS_IN_COMBAT = false;
         }
     }
 }
@@ -83,7 +96,7 @@ fn extras_squad_update(users: UserInfoIter) {
 }
 
 fn imgui(ui: &Ui, not_loading_or_character_selection: bool) {
-    if not_loading_or_character_selection {
+    if (not_loading_or_character_selection && IS_IN_COMBAT) {
         render(ui, ())
     }
 }
