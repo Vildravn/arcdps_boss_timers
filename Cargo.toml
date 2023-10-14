@@ -1,0 +1,12 @@
+[package]
+name = "arcdps_boss_timers"
+version = "0.0.1"
+authors = ["Vildravn"]
+edition = "2021"
+
+[dependencies]
+arcdps = { git = "https://github.com/zerthox/arcdps-bindings", features = ["extras", "log"] }
+log = { version = "0.4.17", features = ["release_max_level_info"] }
+
+[lib]
+crate-type = ["cdylib"]
