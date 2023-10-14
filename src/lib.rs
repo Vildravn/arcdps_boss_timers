@@ -9,7 +9,6 @@ use arcdps::{
 };
 use log::{error, info};
 use imgui::Condition;
-use gw2_mumble::MumbleLink;
 
 const FONT_SIZE: f32 = 2.0;
 
@@ -29,12 +28,6 @@ fn init() -> Result<(), String> {
     info!(target: "window", "only window logging");
     info!(target: "file", "only file logging");
     info!(target: "both", "logging to file and window");
-    MumbleLink::new() {
-        Ok(link) => Some(link),
-        Err(err) => {
-            error!("Failed to grab mumblelink: {err}")
-        }
-    }
     Ok(())
 }
 
