@@ -8,6 +8,7 @@ edition = "2021"
 arcdps = { git = "https://github.com/zerthox/arcdps-bindings", features = ["extras", "log"] }
 arc_util = { git = "https://github.com/zerthox/arcdps-utils" }
 log = { version = "0.4.17", features = ["release_max_level_info"] }
+gw2_mumble = { git = "https://github.com/zerthox/gw2-mumble-rs" }
 
 [lib]
 crate-type = ["cdylib"]

@@ -7,12 +7,11 @@ use arcdps::{
     imgui::{self, Ui},
     exports::{self, CoreColor},
 };
-use log::info;
+use log::{error, info};
 use imgui::Condition;
+use gw2_mumble::MumbleLink;
 
 const FONT_SIZE: f32 = 2.0;
-
-static IS_IN_COMBAT: bool = false;
 
 arcdps::export! {
     name: "Boss Timers",
@@ -30,6 +29,12 @@ fn init() -> Result<(), String> {
     info!(target: "window", "only window logging");
     info!(target: "file", "only file logging");
     info!(target: "both", "logging to file and window");
+    MumbleLink::new() {
+        Ok(link) => Some(link),
+        Err(err) => {
+            error!("Failed to grab mumblelink: {err}")
+        }
+    }
     Ok(())
 }
 
@@ -59,9 +64,7 @@ fn combat(
                 "{} ({}) has entered combat",
                 src.name.unwrap_or("unknown agent"),
                 src.id
-            );
-
-            IS_IN_COMBAT = true;
+            );           
         }
 
         if let StateChange::ExitCombat = event.is_statechange {
@@ -70,8 +73,6 @@ fn combat(
                 src.name.unwrap_or("unknown agent"),
                 src.id
             );
-
-            IS_IN_COMBAT = false;
         }
     }
 }
@@ -96,7 +97,7 @@ fn extras_squad_update(users: UserInfoIter) {
 }
 
 fn imgui(ui: &Ui, not_loading_or_character_selection: bool) {
-    if (not_loading_or_character_selection && IS_IN_COMBAT) {
+    if not_loading_or_character_selection {
         render(ui, ())
     }
 }
