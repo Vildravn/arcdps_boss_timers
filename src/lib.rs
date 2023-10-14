@@ -83,7 +83,7 @@ fn extras_squad_update(users: UserInfoIter) {
 }
 
 fn imgui(ui: &Ui, not_loading_or_character_selection: bool) {
-    if (not_loading_or_character_selection) {
+    if not_loading_or_character_selection {
         render(ui, ())
     }
 }
