@@ -20,6 +20,7 @@ arcdps::export! {
     combat,
     extras_init,
     extras_squad_update,
+    imgui,
 }
 
 fn init() -> Result<(), String> {
@@ -81,6 +82,12 @@ fn extras_squad_update(users: UserInfoIter) {
     }
 }
 
+fn imgui(ui: &Ui, not_loading_or_character_selection: bool) {
+    if (not_loading_or_character_selection) {
+        render(ui, ())
+    }
+}
+
 fn render(ui: &Ui, _: ()) {
     let [screen_width, screen_height] = ui.io().display_size;
 
@@ -98,6 +105,8 @@ fn render(ui: &Ui, _: ()) {
         .movable(false)
         .focus_on_appearing(false)
         .build(ui, || {
+            ui.set_window_font_scale(FONT_SIZE);
+
             render_text(ui, "Test");
         });
 }
