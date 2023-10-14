@@ -1,8 +1,15 @@
+use arc_util::{
+    colors::WHITE,
+    ui::{render, Component},
+};
 use arcdps::{
     extras::{ExtrasAddonInfo, UserInfoIter, UserRole},
     Agent, CombatEvent, StateChange,
 };
 use log::info;
+use imgui::Condition;
+
+const FONT_SIZE: f32 = 2.0;
 
 arcdps::export! {
     name: "Boss Timers",
@@ -20,6 +27,18 @@ fn init() -> Result<(), String> {
     info!(target: "file", "only file logging");
     info!(target: "both", "logging to file and window");
     Ok(())
+}
+
+fn render_text(ui: &Ui, text: &str) {
+    let colors = exports::colors();
+    let white = colors.core(CoreColor::White).unwrap_or(WHITE);
+
+    let [cursor_x, cursor_y] = ui.cursor_pos();
+    let [text_width, _] = ui.calc_text_size(text);
+    let window_width = ui.window_content_region_width();
+    ui.set_cursor_pos([cursor_x + 0.5 * (window_width - text_width), cursor_y]);
+
+    ui_text_colored(white, text);
 }
 
 fn combat(
@@ -58,4 +77,25 @@ fn extras_squad_update(users: UserInfoIter) {
             );
         }
     }
+}
+
+fn render(&mut self, ui: &Ui, _: ()) {
+    let [screen_width, screen_height] = ui.io().display_size;
+
+    imgui::Window::new("##boss-timers-popup")
+        .position(
+            [0.5 * screen_width, 0.2 * screen_height],
+            Condition::Always
+        )
+        .position_pivot([0.5, 0.5])
+        .content_size([screen_width, 0.0])
+        .always_auto_resize(true)
+        .no_decoration()
+        .draw_background(false)
+        .no_inputs()
+        .movable(false)
+        .focus_on_appearing(false)
+        .build(ui, || {
+            Self::render_text(ui, "Test");
+        });
 }

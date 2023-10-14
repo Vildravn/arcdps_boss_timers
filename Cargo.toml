@@ -6,6 +6,7 @@ edition = "2021"
 
 [dependencies]
 arcdps = { git = "https://github.com/zerthox/arcdps-bindings", features = ["extras", "log"] }
+arc_util = { git = "https://github.com/zerthox/arcdps-utils" }
 log = { version = "0.4.17", features = ["release_max_level_info"] }
 
 [lib]
