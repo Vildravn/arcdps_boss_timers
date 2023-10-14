@@ -98,6 +98,6 @@ fn render(ui: &Ui, _: ()) {
         .movable(false)
         .focus_on_appearing(false)
         .build(ui, || {
-            Self::render_text(ui, "Test");
+            render_text(ui, "Test");
         });
 }
